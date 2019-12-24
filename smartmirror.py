@@ -29,6 +29,9 @@ xlarge_text_size = 94
 large_text_size = 48
 medium_text_size = 28
 small_text_size = 18
+very_small_text_size = 11
+
+abs_path = 'git/smartmirror/'
 
 @contextmanager
 def setlocale(name): #thread proof function to work with locale
@@ -42,19 +45,19 @@ def setlocale(name): #thread proof function to work with locale
 # maps open weather icons to
 # icon reading is not impacted by the 'lang' parameter
 icon_lookup = {
-    'clear-day': "assets/Sun.png",  # clear sky day
-    'wind': "assets/Wind.png",   #wind
-    'cloudy': "assets/Cloud.png",  # cloudy day
-    'partly-cloudy-day': "assets/PartlySunny.png",  # partly cloudy day
-    'rain': "assets/Rain.png",  # rain day
-    'snow': "assets/Snow.png",  # snow day
-    'snow-thin': "assets/Snow.png",  # sleet day
-    'fog': "assets/Haze.png",  # fog day
-    'clear-night': "assets/Moon.png",  # clear sky night
-    'partly-cloudy-night': "assets/PartlyMoon.png",  # scattered clouds night
-    'thunderstorm': "assets/Storm.png",  # thunderstorm
-    'tornado': "assests/Tornado.png",    # tornado
-    'hail': "assests/Hail.png"  # hail
+    'clear-day': abs_path + "assets/Sun.png",  # clear sky day
+    'wind': abs_path + "assets/Wind.png",   #wind
+    'cloudy': abs_path + "assets/Cloud.png",  # cloudy day
+    'partly-cloudy-day': abs_path + "assets/PartlySunny.png",  # partly cloudy day
+    'rain': abs_path + "assets/Rain.png",  # rain day
+    'snow': abs_path + "assets/Snow.png",  # snow day
+    'snow-thin': abs_path + "assets/Snow.png",  # sleet day
+    'fog': abs_path + "assets/Haze.png",  # fog day
+    'clear-night': abs_path + "assets/Moon.png",  # clear sky night
+    'partly-cloudy-night': abs_path + "assets/PartlyMoon.png",  # scattered clouds night
+    'thunderstorm': abs_path + "assets/Storm.png",  # thunderstorm
+    'tornado': abs_path + "assests/Tornado.png",    # tornado
+    'hail': abs_path + "assests/Hail.png"  # hail
 }
 
 
@@ -245,7 +248,7 @@ class NewsHeadline(Frame):
     def __init__(self, parent, event_name=""):
         Frame.__init__(self, parent, bg='black')
 
-        image = Image.open("assets/Newspaper.png")
+        image = Image.open(abs_path + "assets/Newspaper.png")
         image = image.resize((25, 25), Image.ANTIALIAS)
         image = image.convert('RGB')
         photo = ImageTk.PhotoImage(image)
@@ -255,7 +258,7 @@ class NewsHeadline(Frame):
         self.iconLbl.pack(side=LEFT, anchor=N)
 
         self.eventName = event_name
-        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', very_small_text_size), fg="white", bg="black")
         self.eventNameLbl.pack(side=LEFT, anchor=N)
 
 
@@ -314,6 +317,7 @@ class FullscreenWindow:
         # calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
+        self.tk.attributes("-fullscreen", True)
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
