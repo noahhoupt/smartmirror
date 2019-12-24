@@ -20,7 +20,8 @@ ui_locale = '' # e.g. 'fr_FR' fro French, '' as default
 time_format = 12 # 12 or 24
 date_format = "%b %d, %Y" # check python doc for strftime() for options
 news_country_code = 'us'
-weather_api_token = '<TOKEN>' # create account at https://darksky.net/dev/
+weather_api_token = 'fafa20ac9149515c209024bb17984569' # create account at https://darksky.net/dev/
+location_api_token = 'b5c93a88d8a648b2bda80a297884192e' # create account at https://app.ipgeolocation.io/
 weather_lang = 'en' # see https://darksky.net/dev/docs/forecast for full list of language parameters values
 weather_unit = 'us' # see https://darksky.net/dev/docs/forecast for full list of unit parameters values
 latitude = None # Set this if IP location lookup does not work for you (must be a string)
@@ -125,29 +126,29 @@ class Weather(Frame):
         self.locationLbl.pack(side=TOP, anchor=W)
         self.get_weather()
 
-    def get_ip(self):
-        try:
-            ip_url = "http://jsonip.com/"
-            req = requests.get(ip_url)
-            ip_json = json.loads(req.text)
-            return ip_json['ip']
-        except Exception as e:
-            traceback.print_exc()
-            return "Error: %s. Cannot get ip." % e
+    # def get_ip(self):
+    #     try:
+    #         ip_url = "https://api.ipgeolocation.io/ipgeo?apiKey=" + location_api_token
+    #         req = requests.get(ip_url)
+    #         ip_json = json.loads(req.text)
+    #         return ip_json['ip']
+    #     except Exception as e:
+    #         traceback.print_exc()
+    #         return "Error: %s. Cannot get ip." % e
 
     def get_weather(self):
         try:
 
             if latitude is None and longitude is None:
                 # get location
-                location_req_url = "http://freegeoip.net/json/%s" % self.get_ip()
+                location_req_url = "https://api.ipgeolocation.io/ipgeo?apiKey=" + location_api_token
                 r = requests.get(location_req_url)
                 location_obj = json.loads(r.text)
 
                 lat = location_obj['latitude']
                 lon = location_obj['longitude']
 
-                location2 = "%s, %s" % (location_obj['city'], location_obj['region_code'])
+                location2 = "%s, %s" % (location_obj['city'], location_obj['state_prov'])
 
                 # get weather
                 weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (weather_api_token, lat,lon,weather_lang,weather_unit)
